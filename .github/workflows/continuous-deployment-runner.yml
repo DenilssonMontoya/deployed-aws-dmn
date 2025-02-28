@@ -32,10 +32,11 @@ jobs:
         run: docker build  -t $REPOSITORY:$VERSION .
       - name: Tag and Push on GitHub Packages
         run: |
-          docker tag $REPOSITORY:$VERSION $GHCR_URL/$REPOSITORY:$VERSION
-          docker tag $REPOSITORY:$VERSION $GHCR_URL/$REPOSITORY:latest
-          docker push $GHCR_URL/$REPOSITORY:$VERSION
-          docker push $GHCR_URL/$REPOSITORY:latest
+          LOWER_URL=$(echo "$GHCR_URL/$REPOSITORY" | tr '[:upper:]' '[:lower:]')          
+          docker tag $REPOSITORY:$VERSION $LOWER_URL:$VERSION
+          docker tag $REPOSITORY:$VERSION $LOWER_URL:latest
+          docker push $LOWER_URL:$VERSION
+          docker push $LOWER_URL:latest
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
