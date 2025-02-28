@@ -34,9 +34,10 @@ jobs:
           docker build  -t $LOWER_URL_REPO:$VERSION .
       - name: Tag and Push on GitHub Packages
         run: |
+          LOWER_URL_REPO=$(echo "$REPOSITORY" | tr '[:upper:]' '[:lower:]')                    
           LOWER_URL=$(echo "$GHCR_URL/$REPOSITORY" | tr '[:upper:]' '[:lower:]')          
-          docker tag $REPOSITORY:$VERSION $LOWER_URL:$VERSION
-          docker tag $REPOSITORY:$VERSION $LOWER_URL:latest
+          docker tag $LOWER_URL_REPO:$VERSION $LOWER_URL:$VERSION
+          docker tag $LOWER_URL_REPO:$VERSION $LOWER_URL:latest
           docker push $LOWER_URL:$VERSION
           docker push $LOWER_URL:latest
 
