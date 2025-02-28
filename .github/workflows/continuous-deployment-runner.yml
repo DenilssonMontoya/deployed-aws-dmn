@@ -48,5 +48,6 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
       - name: Tag and Push AWS ECR
         run: |
-          docker tag $REPOSITORY:$VERSION $AWS_ECR_URL/$REPOSITORY:latest
-          docker push $AWS_ECR_URL/$REPOSITORY:latest
+          LOWER_URL_REPO=$(echo "$REPOSITORY" | tr '[:upper:]' '[:lower:]')                    
+          docker tag $LOWER_URL_REPO:$VERSION $AWS_ECR_URL/$LOWER_URL_REPO:latest
+          docker push $AWS_ECR_URL/$LOWER_URL_REPO:latest
