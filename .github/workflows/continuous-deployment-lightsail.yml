@@ -34,10 +34,11 @@ jobs:
         run: docker build  -t $ARTIFACT:$VERSION .
       - name: Tag and Push on GitHub Packages
         run: |
-          docker tag $ARTIFACT:$VERSION $GHCR_URL/$REPOSITORY:$VERSION
-          docker tag $ARTIFACT:$VERSION $GHCR_URL/$REPOSITORY:latest
-          docker push $GHCR_URL/$REPOSITORY:$VERSION
-          docker push $GHCR_URL/$REPOSITORY:latest
+          LOWER_URL=$(echo "$GHCR_URL" | tr '[:upper:]' '[:lower:]')
+          docker tag $ARTIFACT:$VERSION LOWER_URL/$REPOSITORY:$VERSION
+          docker tag $ARTIFACT:$VERSION LOWER_URL/$REPOSITORY:latest
+          docker push LOWER_URL/$REPOSITORY:$VERSION
+          docker push LOWER_URL/$REPOSITORY:latest
 
       - name: Deploy to AWS Lightsail
         uses: appleboy/ssh-action@v1.2.1
